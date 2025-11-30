@@ -4,7 +4,7 @@
 
 - **Feeds:** Topic‑based spaces for different kinds of conversations – Insider Intel for doubts and reviews, Study Circle for academics, Launchpad for opportunities, Night Owls for late‑night chats, Confessions for venting, and more. Posts in Insider Intel and Confessions are anonymous so students can ask questions and share honest takes without revealing their identity.
 
-- **Events hub:** Students can create and register for events, from official fests to casual meetups. For example, if you want to book a football turf but don’t have a squad, you can create an event and let interested people join you.
+- **Events hub:** Students can create and register for events, and connect with others with similar interests. For example, if you want to book a football turf but don’t have a squad, you can create an event and let interested people join you.
 
 - **Explore by tags:** Follow tags like `#Tech`, `#HostelLife`, `#Startups` etc. When a new post or event uses a tag you follow, it can surface in your personalised experience so you never miss relevant stuff.
 
@@ -44,7 +44,7 @@
 
 ## 👥 Team
 
-- **Archit Adarsh** – Core developer (frontend, backend, DB integration).  
+- **Archit Adarsh** – Workred on core code (frontend, backend, DB integration).  
 - **Abhigyan Gupta** – Code Structure, documentation, presentation.  
 - **Shubham Singal** – UI design and frontend implementation.  
-- **Aayush Kumar** – UI design support and feature research.  
+- **Aayush Kumar** – UI design, support and feature research.  
