@@ -4,42 +4,42 @@ import {
   Heart, MessageCircle, MapPin, CheckCircle,
   Sparkles, Zap, TrendingUp, Calendar, BookOpen,
   Lightbulb, ChevronDown, Check, Hash, ArrowLeft, Plus, X, Users,
-  Send, ShieldCheck, Phone, FileText, Edit3
+  Send, ShieldCheck, Phone, FileText, Edit3, Menu
 } from 'lucide-react';
 import { supabase } from './supabaseClient';
 
 // ---------- CONSTANTS ----------
 const INTEREST_OPTIONS = [
-  { id: 'tech',      label: 'Tech & Coding',        tag: '#Tech',        desc: 'Hackathons, AI, and code sprints.',        color: 'bg-violet-500/20 text-violet-300',   gradient: 'from-violet-600 to-purple-600' },
-  { id: 'cp',        label: 'DSA & CP',             tag: '#DSA',         desc: 'LeetCode, Codeforces, and contests.',      color: 'bg-indigo-500/20 text-indigo-300',   gradient: 'from-indigo-500 to-blue-600' },
-  { id: 'webdev',    label: 'Web Dev',              tag: '#WebDev',      desc: 'Frontend, backend, and full‑stack.',       color: 'bg-sky-500/20 text-sky-300',         gradient: 'from-sky-500 to-cyan-500' },
+  { id: 'tech', label: 'Tech & Coding', tag: '#Tech', desc: 'Hackathons, AI, and code sprints.', color: 'bg-violet-500/20 text-violet-300', gradient: 'from-violet-600 to-purple-600' },
+  { id: 'cp', label: 'DSA & CP', tag: '#DSA', desc: 'LeetCode, Codeforces, and contests.', color: 'bg-indigo-500/20 text-indigo-300', gradient: 'from-indigo-500 to-blue-600' },
+  { id: 'webdev', label: 'Web Dev', tag: '#WebDev', desc: 'Frontend, backend, and full‑stack.', color: 'bg-sky-500/20 text-sky-300', gradient: 'from-sky-500 to-cyan-500' },
 
-  { id: 'startup',   label: 'Startups',             tag: '#Startup',     desc: 'Ideas, pitches, and side projects.',       color: 'bg-fuchsia-500/20 text-fuchsia-300', gradient: 'from-fuchsia-600 to-purple-800' },
-  { id: 'product',   label: 'Product & UX',         tag: '#Product',     desc: 'Design, roadmaps, and PM thinking.',       color: 'bg-rose-500/20 text-rose-300',       gradient: 'from-rose-500 to-pink-600' },
+  { id: 'startup', label: 'Startups', tag: '#Startup', desc: 'Ideas, pitches, and side projects.', color: 'bg-fuchsia-500/20 text-fuchsia-300', gradient: 'from-fuchsia-600 to-purple-800' },
+  { id: 'product', label: 'Product & UX', tag: '#Product', desc: 'Design, roadmaps, and PM thinking.', color: 'bg-rose-500/20 text-rose-300', gradient: 'from-rose-500 to-pink-600' },
 
-  { id: 'study',     label: 'Study Hacks',          tag: '#Study',       desc: 'Notes, exam tips, and schedules.',        color: 'bg-emerald-500/20 text-emerald-300', gradient: 'from-emerald-500 to-teal-500' },
-  { id: 'notes',     label: 'Notes Exchange',       tag: '#Notes',       desc: 'PDFs, summaries, and past papers.',        color: 'bg-green-500/20 text-green-300',     gradient: 'from-green-500 to-lime-500' },
+  { id: 'study', label: 'Study Hacks', tag: '#Study', desc: 'Notes, exam tips, and schedules.', color: 'bg-emerald-500/20 text-emerald-300', gradient: 'from-emerald-500 to-teal-500' },
+  { id: 'notes', label: 'Notes Exchange', tag: '#Notes', desc: 'PDFs, summaries, and past papers.', color: 'bg-green-500/20 text-green-300', gradient: 'from-green-500 to-lime-500' },
 
-  { id: 'sports',    label: 'Sports & Turf',        tag: '#Sports',      desc: 'Football turf and tournaments.',          color: 'bg-orange-500/20 text-orange-300',   gradient: 'from-orange-500 to-amber-500' },
-  { id: 'fitness',   label: 'Gym & Fitness',        tag: '#Fitness',     desc: 'Lifting, running, and health.',           color: 'bg-lime-500/20 text-lime-300',       gradient: 'from-lime-500 to-emerald-500' },
+  { id: 'sports', label: 'Sports & Turf', tag: '#Sports', desc: 'Football turf and tournaments.', color: 'bg-orange-500/20 text-orange-300', gradient: 'from-orange-500 to-amber-500' },
+  { id: 'fitness', label: 'Gym & Fitness', tag: '#Fitness', desc: 'Lifting, running, and health.', color: 'bg-lime-500/20 text-lime-300', gradient: 'from-lime-500 to-emerald-500' },
 
-  { id: 'food',      label: 'Food & Mess',          tag: '#Foodie',      desc: 'Mess hacks and café plans.',              color: 'bg-amber-500/20 text-amber-300',     gradient: 'from-amber-500 to-orange-600' },
-  { id: 'nightowls', label: 'Night Owls',           tag: '#NightOwls',   desc: '2 AM coding and Maggi runs.',             color: 'bg-purple-500/20 text-purple-300',   gradient: 'from-purple-600 to-fuchsia-600' },
+  { id: 'food', label: 'Food & Mess', tag: '#Foodie', desc: 'Mess hacks and café plans.', color: 'bg-amber-500/20 text-amber-300', gradient: 'from-amber-500 to-orange-600' },
+  { id: 'nightowls', label: 'Night Owls', tag: '#NightOwls', desc: '2 AM coding and Maggi runs.', color: 'bg-purple-500/20 text-purple-300', gradient: 'from-purple-600 to-fuchsia-600' },
 
-  { id: 'music',     label: 'Music & Jams',         tag: '#Music',       desc: 'Jams, playlists, and concerts.',          color: 'bg-pink-500/20 text-pink-300',       gradient: 'from-pink-500 to-rose-500' },
-  { id: 'gaming',    label: 'Gaming & Esports',     tag: '#Gaming',      desc: 'LAN parties and online squads.',          color: 'bg-slate-500/20 text-slate-300',     gradient: 'from-slate-600 to-slate-800' },
+  { id: 'music', label: 'Music & Jams', tag: '#Music', desc: 'Jams, playlists, and concerts.', color: 'bg-pink-500/20 text-pink-300', gradient: 'from-pink-500 to-rose-500' },
+  { id: 'gaming', label: 'Gaming & Esports', tag: '#Gaming', desc: 'LAN parties and online squads.', color: 'bg-slate-500/20 text-slate-300', gradient: 'from-slate-600 to-slate-800' },
 
-  { id: 'clubs',     label: 'Clubs & Societies',    tag: '#Clubs',       desc: 'Find your cultural and tech clubs.',      color: 'bg-cyan-500/20 text-cyan-300',       gradient: 'from-cyan-500 to-sky-500' },
-  { id: 'events',    label: 'Fests & Events',       tag: '#CampusFest',  desc: 'College fest and flagship events.',       color: 'bg-red-500/20 text-red-300',         gradient: 'from-red-500 to-orange-500' },
+  { id: 'clubs', label: 'Clubs & Societies', tag: '#Clubs', desc: 'Find your cultural and tech clubs.', color: 'bg-cyan-500/20 text-cyan-300', gradient: 'from-cyan-500 to-sky-500' },
+  { id: 'events', label: 'Fests & Events', tag: '#CampusFest', desc: 'College fest and flagship events.', color: 'bg-red-500/20 text-red-300', gradient: 'from-red-500 to-orange-500' },
 
-  { id: 'thrift',    label: 'Thrift & Marketplace', tag: '#Thrift',      desc: 'Buy/sell books, drafters, and more.',     color: 'bg-zinc-500/20 text-zinc-300',       gradient: 'from-zinc-500 to-neutral-700' },
-  { id: 'career',    label: 'Career & Internships', tag: '#Career',      desc: 'Internships, resumes, and referrals.',     color: 'bg-blue-500/20 text-blue-300',       gradient: 'from-blue-500 to-indigo-600' },
+  { id: 'thrift', label: 'Thrift & Marketplace', tag: '#Thrift', desc: 'Buy/sell books, drafters, and more.', color: 'bg-zinc-500/20 text-zinc-300', gradient: 'from-zinc-500 to-neutral-700' },
+  { id: 'career', label: 'Career & Internships', tag: '#Career', desc: 'Internships, resumes, and referrals.', color: 'bg-blue-500/20 text-blue-300', gradient: 'from-blue-500 to-indigo-600' },
 
-  { id: 'art',       label: 'Art & Design',         tag: '#Creative',    desc: 'Sketching, UI/UX, and reels.',            color: 'bg-rose-500/20 text-rose-300',       gradient: 'from-rose-500 to-pink-600' },
-  { id: 'books',     label: 'Books & Writing',      tag: '#Books',       desc: 'Reading clubs and poetry.',               color: 'bg-orange-500/20 text-orange-300',   gradient: 'from-orange-400 to-red-500' },
+  { id: 'art', label: 'Art & Design', tag: '#Creative', desc: 'Sketching, UI/UX, and reels.', color: 'bg-rose-500/20 text-rose-300', gradient: 'from-rose-500 to-pink-600' },
+  { id: 'books', label: 'Books & Writing', tag: '#Books', desc: 'Reading clubs and poetry.', color: 'bg-orange-500/20 text-orange-300', gradient: 'from-orange-400 to-red-500' },
 
-  { id: 'confess',   label: 'Confessions',          tag: '#Confessions', desc: 'Anon campus stories & hot takes.',        color: 'bg-slate-600/20 text-slate-200',     gradient: 'from-slate-700 to-slate-900' },
-  { id: 'hostel',    label: 'Hostel Life',          tag: '#Hostel',      desc: 'Roommate stories and hostel hacks.',      color: 'bg-yellow-500/20 text-yellow-200',   gradient: 'from-yellow-500 to-amber-500' }
+  { id: 'confess', label: 'Confessions', tag: '#Confessions', desc: 'Anon campus stories & hot takes.', color: 'bg-slate-600/20 text-slate-200', gradient: 'from-slate-700 to-slate-900' },
+  { id: 'hostel', label: 'Hostel Life', tag: '#Hostel', desc: 'Roommate stories and hostel hacks.', color: 'bg-yellow-500/20 text-yellow-200', gradient: 'from-yellow-500 to-amber-500' }
 ];
 
 const DEGREE_OPTIONS = ['B.Tech', 'B.E', 'B.Sc', 'B.Com', 'BBA', 'MBA', 'M.Tech', 'PhD', 'MBBS', 'B.Arch', 'Other'];
@@ -64,88 +64,176 @@ const CrazyDynamicBackground = () => (
 );
 
 // ---------- NAVBAR ----------
-const Navbar = ({ currentPage, setCurrentPage, isLoggedIn, user, onLogout }) => (
-  <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-xl border-b border-white/10 z-50 px-6 py-4 flex justify-between items-center shadow-2xl">
-    <div
-      className="flex items-center gap-3 cursor-pointer group"
-      onClick={() => setCurrentPage(isLoggedIn ? 'feed' : 'home')}
-    >
-      <div className="bg-gradient-to-tr from-violet-600 to-orange-500 p-2 rounded-xl shadow-lg border border-white/20">
-        <Globe className="text-white w-6 h-6" />
-      </div>
-      <span className="text-xl font-black text-white tracking-wider">Campus Sync</span>
-    </div>
+const Navbar = ({ currentPage, setCurrentPage, isLoggedIn, user, onLogout }) => {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    <div className="hidden md:flex gap-2 bg-white/5 p-1.5 rounded-full border border-white/10">
-      {!isLoggedIn && (
-        <>
-          {['Home', 'About'].map((item) => (
-            <button
-              key={item}
-              onClick={() => setCurrentPage(item.toLowerCase())}
-              className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${
-                currentPage === item.toLowerCase()
+  const handleNavClick = (page) => {
+    setCurrentPage(page);
+    setIsMobileMenuOpen(false);
+  };
+
+  return (
+    <nav className="fixed top-0 w-full bg-black/60 backdrop-blur-xl border-b border-white/10 z-50 px-6 py-4 shadow-2xl">
+      <div className="flex justify-between items-center">
+        <div
+          className="flex items-center gap-3 cursor-pointer group"
+          onClick={() => handleNavClick(isLoggedIn ? 'feed' : 'home')}
+        >
+          <div className="bg-gradient-to-tr from-violet-600 to-orange-500 p-2 rounded-xl shadow-lg border border-white/20">
+            <Globe className="text-white w-6 h-6" />
+          </div>
+          <span className="text-xl font-black text-white tracking-wider">Campus Sync</span>
+        </div>
+
+        {/* Desktop Nav */}
+        <div className="hidden md:flex gap-2 bg-white/5 p-1.5 rounded-full border border-white/10">
+          {!isLoggedIn && (
+            <>
+              {['Home', 'About'].map((item) => (
+                <button
+                  key={item}
+                  onClick={() => setCurrentPage(item.toLowerCase())}
+                  className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${currentPage === item.toLowerCase()
+                    ? 'bg-violet-600 text-white shadow-lg'
+                    : 'text-slate-400 hover:text-white hover:bg-white/5'
+                    }`}
+                >
+                  {item}
+                </button>
+              ))}
+              <button
+                onClick={() => setCurrentPage('login')}
+                className="px-6 py-2 rounded-full text-sm font-bold text-slate-400 hover:text-white"
+              >
+                Log In
+              </button>
+            </>
+          )}
+
+          {isLoggedIn &&
+            ['Feed', 'Events', 'Explore'].map((item) => (
+              <button
+                key={item}
+                onClick={() => setCurrentPage(item.toLowerCase())}
+                className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${currentPage === item.toLowerCase()
                   ? 'bg-violet-600 text-white shadow-lg'
                   : 'text-slate-400 hover:text-white hover:bg-white/5'
-              }`}
-            >
-              {item}
-            </button>
-          ))}
-          <button
-            onClick={() => setCurrentPage('login')}
-            className="px-6 py-2 rounded-full text-sm font-bold text-slate-400 hover:text-white"
-          >
-            Log In
-          </button>
-        </>
-      )}
-
-      {isLoggedIn &&
-        ['Feed', 'Events', 'Explore'].map((item) => (
-          <button
-            key={item}
-            onClick={() => setCurrentPage(item.toLowerCase())}
-            className={`px-6 py-2 rounded-full text-sm font-bold transition-all ${
-              currentPage === item.toLowerCase()
-                ? 'bg-violet-600 text-white shadow-lg'
-                : 'text-slate-400 hover:text-white hover:bg-white/5'
-            }`}
-          >
-            {item}
-          </button>
-        ))}
-    </div>
-
-    {isLoggedIn ? (
-      <div className="flex items-center gap-4">
-        <div className="hidden md:flex items-center gap-2 bg-orange-500/10 px-3 py-1.5 rounded-full border border-orange-500/30">
-          <Sparkles size={14} className="text-orange-400" />
-          <span className="text-xs font-bold text-orange-200">{user?.karma || 0} Karma</span>
+                  }`}
+              >
+                {item}
+              </button>
+            ))}
         </div>
+
+        {/* Desktop User Actions */}
+        <div className="hidden md:flex items-center gap-4">
+          {isLoggedIn ? (
+            <>
+              <div className="flex items-center gap-2 bg-orange-500/10 px-3 py-1.5 rounded-full border border-orange-500/30">
+                <Sparkles size={14} className="text-orange-400" />
+                <span className="text-xs font-bold text-orange-200">{user?.karma || 0} Karma</span>
+              </div>
+              <button
+                onClick={() => setCurrentPage('profile')}
+                className="w-10 h-10 bg-gradient-to-br from-violet-500 to-orange-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg border border-white/20 hover:scale-105 transition"
+              >
+                {user?.name ? user.name[0].toUpperCase() : 'U'}
+              </button>
+              <button
+                onClick={onLogout}
+                className="text-xs font-bold text-slate-400 hover:text-red-400"
+              >
+                Log Out
+              </button>
+            </>
+          ) : (
+            <button
+              onClick={() => setCurrentPage('login')}
+              className="bg-white text-black px-6 py-2.5 rounded-full font-bold shadow-lg"
+            >
+              Log In
+            </button>
+          )}
+        </div>
+
+        {/* Mobile Menu Button */}
         <button
-          onClick={() => setCurrentPage('profile')}
-          className="w-10 h-10 bg-gradient-to-br from-violet-500 to-orange-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg border border-white/20 hover:scale-105 transition"
+          className="md:hidden text-white p-2"
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
-          {user?.name ? user.name[0].toUpperCase() : 'U'}
-        </button>
-        <button
-          onClick={onLogout}
-          className="text-xs font-bold text-slate-400 hover:text-red-400"
-        >
-          Log Out
+          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
-    ) : (
-      <button
-        onClick={() => setCurrentPage('login')}
-        className="bg-white text-black px-6 py-2.5 rounded-full font-bold shadow-lg"
-      >
-        Log In
-      </button>
-    )}
-  </nav>
-);
+
+      {/* Mobile Menu Overlay */}
+      {isMobileMenuOpen && (
+        <div className="md:hidden absolute top-full left-0 w-full bg-slate-950/95 backdrop-blur-xl border-b border-white/10 p-6 flex flex-col gap-4 animate-fade-in shadow-2xl">
+          {!isLoggedIn && (
+            <>
+              {['Home', 'About'].map((item) => (
+                <button
+                  key={item}
+                  onClick={() => handleNavClick(item.toLowerCase())}
+                  className={`w-full text-left px-4 py-3 rounded-xl text-lg font-bold transition-all ${currentPage === item.toLowerCase()
+                    ? 'bg-violet-600/20 text-violet-300 border border-violet-500/30'
+                    : 'text-slate-300 hover:bg-white/5'
+                    }`}
+                >
+                  {item}
+                </button>
+              ))}
+              <button
+                onClick={() => handleNavClick('login')}
+                className="w-full text-left px-4 py-3 rounded-xl text-lg font-bold text-slate-300 hover:bg-white/5"
+              >
+                Log In
+              </button>
+            </>
+          )}
+
+          {isLoggedIn && (
+            <>
+              <div className="flex items-center gap-3 px-4 py-2 mb-2 border-b border-white/10 pb-4">
+                <div className="w-10 h-10 bg-gradient-to-br from-violet-500 to-orange-500 rounded-full flex items-center justify-center text-white font-bold shadow-lg">
+                  {user?.name ? user.name[0].toUpperCase() : 'U'}
+                </div>
+                <div>
+                  <p className="font-bold text-white">{user?.name}</p>
+                  <div className="flex items-center gap-1.5">
+                    <Sparkles size={12} className="text-orange-400" />
+                    <span className="text-xs font-bold text-orange-200">{user?.karma || 0} Karma</span>
+                  </div>
+                </div>
+              </div>
+
+              {['Feed', 'Events', 'Explore', 'Profile'].map((item) => (
+                <button
+                  key={item}
+                  onClick={() => handleNavClick(item.toLowerCase())}
+                  className={`w-full text-left px-4 py-3 rounded-xl text-lg font-bold transition-all ${currentPage === item.toLowerCase()
+                    ? 'bg-violet-600/20 text-violet-300 border border-violet-500/30'
+                    : 'text-slate-300 hover:bg-white/5'
+                    }`}
+                >
+                  {item}
+                </button>
+              ))}
+              <button
+                onClick={() => {
+                  onLogout();
+                  setIsMobileMenuOpen(false);
+                }}
+                className="w-full text-left px-4 py-3 rounded-xl text-lg font-bold text-red-400 hover:bg-red-500/10"
+              >
+                Log Out
+              </button>
+            </>
+          )}
+        </div>
+      )}
+    </nav>
+  );
+};
 
 // ---------- LANDING ----------
 const LandingPage = ({ onGetStarted }) => (
@@ -153,7 +241,7 @@ const LandingPage = ({ onGetStarted }) => (
     <div className="inline-block px-4 py-1.5 rounded-full border border-violet-500/30 bg-violet-500/10 text-violet-300 text-sm font-bold mb-8">
       🚀 The #1 Community for Students
     </div>
-    <h1 className="text-6xl md:text-8xl font-black text-white mb-8 tracking-tighter leading-none drop-shadow-[0_0_30px_rgba(139,92,246,0.4)]">
+    <h1 className="text-4xl md:text-6xl lg:text-8xl font-black text-white mb-8 tracking-tighter leading-none drop-shadow-[0_0_30px_rgba(139,92,246,0.4)]">
       CAMPUS <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-400 to-orange-400">SYNC</span>
     </h1>
     <p className="text-xl md:text-2xl text-slate-300 mb-12 max-w-2xl font-medium">
@@ -394,10 +482,11 @@ const AuthPage = ({ onLogin, onSignup }) => {
   );
 };
 
-// ---------- INTEREST SELECT (restyled dark) ----------
+// ---------- INTEREST SELECT (Premium Dark Glassmorphism) ----------
 const InterestSelectPage = ({ profile, onDone }) => {
   const [search, setSearch] = useState('');
   const [selected, setSelected] = useState(profile.interested_tags || []);
+  const [expanded, setExpanded] = useState(false);
 
   const toggle = (tag) => {
     setSelected((prev) =>
@@ -410,6 +499,8 @@ const InterestSelectPage = ({ profile, onDone }) => {
       opt.label.toLowerCase().includes(search.toLowerCase()) ||
       opt.tag.toLowerCase().includes(search.toLowerCase())
   );
+
+  const visibleOptions = expanded ? filtered : filtered.slice(0, 9);
 
   const handleContinue = async () => {
     if (selected.length < 3) {
@@ -431,56 +522,87 @@ const InterestSelectPage = ({ profile, onDone }) => {
   };
 
   return (
-    <div className="pt-28 min-h-screen flex items-center justify-center px-4">
-      <div className="w-full max-w-5xl bg-gradient-to-b from-slate-900/90 to-slate-950/90 rounded-[2.5rem] shadow-[0_0_60px_rgba(15,23,42,0.9)] border border-white/10 p-8 md:p-10">
-        <h1 className="text-3xl md:text-4xl font-black text-white mb-2">
-          Select Your Interests
-        </h1>
-        <p className="text-slate-300 mb-5 text-sm md:text-base">
-          Choose at least <span className="font-semibold text-sky-400">3 categories</span> to personalise your experience.
-        </p>
+    <div className="min-h-screen flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Background Orbs */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-violet-600/20 rounded-full blur-[120px] pointer-events-none"></div>
 
-        <div className="mb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
-          <div className="flex-1 flex items-center gap-2 px-4 py-2.5 rounded-full border border-white/10 bg-white/5">
-            <Hash size={16} className="text-slate-400" />
-            <input
-              className="flex-1 bg-transparent text-sm text-slate-100 outline-none"
-              placeholder="Search categories (e.g. Tech, Sports, Startups)"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
-          <span className="text-xs text-slate-400">
-            {selected.length} selected (minimum 3)
-          </span>
+      <div className="relative z-10 w-full max-w-lg bg-black/40 backdrop-blur-3xl border border-white/10 rounded-[2rem] p-6 shadow-2xl flex flex-col">
+        <div className="text-center mb-5">
+          <h1 className="text-2xl md:text-3xl font-black text-white mb-1 tracking-tight">
+            What are you into?
+          </h1>
+          <p className="text-slate-400 text-xs md:text-sm">
+            Pick at least <span className="text-violet-400 font-bold">3 interests</span> to personalize your feed.
+          </p>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 max-h-64 overflow-y-auto mb-6">
-          {filtered.map((opt) => {
+        <div className="flex flex-col gap-3 mb-5">
+          <div className="relative w-full group">
+            <div className="absolute inset-0 bg-gradient-to-r from-violet-600 to-orange-600 rounded-xl blur opacity-20 group-hover:opacity-40 transition duration-500"></div>
+            <div className="relative bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 flex items-center gap-3">
+              <Hash size={14} className="text-slate-400" />
+              <input
+                className="flex-1 bg-transparent text-white placeholder:text-slate-500 outline-none font-medium text-sm"
+                placeholder="Search topics..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <div className="px-2 py-0.5 rounded-full bg-white/5 border border-white/10 text-[10px] font-bold uppercase tracking-wider text-slate-300">
+                {selected.length} Selected
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-3 gap-2 mb-4">
+          {visibleOptions.map((opt) => {
             const active = selected.includes(opt.tag);
             return (
               <button
                 key={opt.id}
                 type="button"
                 onClick={() => toggle(opt.tag)}
-                className={`w-full px-4 py-3 rounded-full text-sm font-semibold border transition flex items-center justify-center ${
-                  active
-                    ? 'bg-sky-500 text-white border-sky-400 shadow-[0_0_16px_rgba(56,189,248,0.6)]'
-                    : 'bg-slate-800/70 text-slate-200 border-slate-600 hover:bg-slate-700'
-                }`}
+                className={`group relative px-2 py-2.5 rounded-xl text-[10px] font-bold border transition-all duration-300 flex flex-col items-center justify-center gap-1 text-center ${active
+                  ? 'bg-white text-black border-white shadow-[0_0_10px_rgba(255,255,255,0.3)] scale-105 z-10'
+                  : 'bg-white/5 text-slate-400 border-white/5 hover:bg-white/10 hover:border-white/20 hover:text-white'
+                  }`}
               >
-                {active && <Check size={16} className="mr-1" />}
-                {opt.label}
+                {active && (
+                  <div className="absolute top-1 right-1 text-green-500">
+                    <CheckCircle size={10} fill="currentColor" className="text-white" />
+                  </div>
+                )}
+                <span className={active ? 'text-black' : 'text-slate-300 group-hover:text-white'}>
+                  {opt.label}
+                </span>
               </button>
             );
           })}
         </div>
 
+        {filtered.length > 9 && (
+          <button
+            onClick={() => setExpanded(!expanded)}
+            className="text-xs font-bold text-slate-400 hover:text-white mb-5 flex items-center justify-center gap-1 transition"
+          >
+            {expanded ? (
+              <>
+                Show Less <ChevronDown size={14} className="rotate-180" />
+              </>
+            ) : (
+              <>
+                See More Interests <ChevronDown size={14} />
+              </>
+            )}
+          </button>
+        )}
+
         <button
           onClick={handleContinue}
-          className="w-full mt-2 py-3 rounded-xl bg-sky-500 hover:bg-sky-400 text-white font-semibold text-sm shadow-[0_0_25px_rgba(56,189,248,0.7)]"
+          className="w-full py-3 rounded-xl bg-gradient-to-r from-violet-600 to-orange-500 text-white font-bold text-sm shadow-lg hover:scale-[1.02] transition-transform duration-300 relative overflow-hidden group"
         >
-          Continue
+          <span className="relative z-10">Continue to Campus Sync</span>
+          <div className="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition duration-300"></div>
         </button>
       </div>
     </div>
@@ -638,16 +760,14 @@ const FeedPage = ({ user, posts, onCreatePost, onLike }) => {
             <button
               key={cat.name}
               onClick={() => setActiveTab(cat.name)}
-              className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 mb-2 border ${
-                activeTab === cat.name
-                  ? 'bg-violet-600 text-white shadow-lg border-violet-400'
-                  : 'hover:bg-white/10 text-slate-300 border-transparent'
-              }`}
+              className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl transition-all duration-300 mb-2 border ${activeTab === cat.name
+                ? 'bg-violet-600 text-white shadow-lg border-violet-400'
+                : 'hover:bg-white/10 text-slate-300 border-transparent'
+                }`}
             >
               <div
-                className={`p-2 rounded-xl ${
-                  activeTab === cat.name ? 'bg-white/20' : 'bg-black/20 text-slate-500'
-                }`}
+                className={`p-2 rounded-xl ${activeTab === cat.name ? 'bg-white/20' : 'bg-black/20 text-slate-500'
+                  }`}
               >
                 <cat.icon size={20} />
               </div>
@@ -737,11 +857,10 @@ const FeedPage = ({ user, posts, onCreatePost, onLike }) => {
                         key={opt.id}
                         type="button"
                         onClick={() => togglePostTag(opt.tag)}
-                        className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${
-                          active
-                            ? 'bg-violet-500 text-white border-violet-300'
-                            : 'bg-slate-800 text-slate-200 border-slate-600 hover:bg-slate-700'
-                        }`}
+                        className={`px-3 py-1.5 rounded-full text-xs font-semibold border transition ${active
+                          ? 'bg-violet-500 text-white border-violet-300'
+                          : 'bg-slate-800 text-slate-200 border-slate-600 hover:bg-slate-700'
+                          }`}
                       >
                         {opt.label}
                       </button>
@@ -870,7 +989,8 @@ const EventDetailsModal = ({ event, onClose, onRegister, isRegistered, user }) =
       {/* centered card with image */}
       <div className="bg-[#0F0F13] border border-white/20 rounded-2xl w-full max-w-2xl max-h-[70vh] relative z-10 shadow-2xl flex overflow-hidden flex-col md:flex-row">
         {/* left: image & basic info */}
-        <div className="w-full md:w-5/12 h-44 md:h-full relative">
+        <div className="w-full md:w-7/12 lg:w-5/12 h-44 md:h-auto md:min-h-[400px] relative">
+
           <img
             src={event.img}
             className="absolute inset-0 w-full h-full object-cover"
@@ -1182,11 +1302,10 @@ const ExplorePage = ({ followedTags, toggleFollow, posts }) => {
                       e.stopPropagation();
                       toggleFollow(cat.tag);
                     }}
-                    className={`p-2 rounded-full border borderwhite/10 transition ${
-                      followedTags.includes(cat.tag)
-                        ? 'bg-green-500/20 textgreen-400'
-                        : 'bg-white/5 text-slate-400 hover:textwhite'
-                    }`}
+                    className={`p-2 rounded-full border borderwhite/10 transition ${followedTags.includes(cat.tag)
+                      ? 'bg-green-500/20 textgreen-400'
+                      : 'bg-white/5 text-slate-400 hover:textwhite'
+                      }`}
                   >
                     {followedTags.includes(cat.tag) ? <Check size={18} /> : <Plus size={18} />}
                   </button>
@@ -1236,7 +1355,7 @@ const ExplorePage = ({ followedTags, toggleFollow, posts }) => {
           <div className="max-w-3xl mx-auto grid gap-6">
             {tagPosts.length > 0 ? (
               tagPosts.map((post) => (
-                <PostCard key={post.id} post={post} user={{ name: 'Guest' }} onLike={() => {}} />
+                <PostCard key={post.id} post={post} user={{ name: 'Guest' }} onLike={() => { }} />
               ))
             ) : (
               <div className="text-center text-slate-500 py-10">
@@ -1250,92 +1369,88 @@ const ExplorePage = ({ followedTags, toggleFollow, posts }) => {
   );
 };
 
-// ---------- PROFILE ----------
-const ProfilePage = ({ user, posts, registeredEventIds, events = [] }) => {
+// ---------- PROFILE (Redesigned) ----------
+const ProfilePage = ({ user, posts, registeredEventIds, events = [], comments = [] }) => {
   const myPosts = posts.filter((p) => p.author === user.name);
   const myEvents = events.filter((ev) => registeredEventIds.includes(ev.id));
-  const myComments = []; // wire this later from comments table
+  const myComments = comments.filter((c) => c.user_name === user.name);
   const topInterests = (user.interestedTags || []).slice(0, 6);
 
   return (
-    <div className="pt-28 px-4 pb-20 relative z-10 max-w-6xl mx-auto">
-      <div className="bg-gradient-to-r from-violet-900/70 via-slate-900/80 to-orange-900/70 backdrop-blur-xl rounded-[3rem] border borderwhite/20 overflow-hidden p-8 md:p-10 shadow-[0_0_60px_rgba(15,23,42,0.9)]">
-        {/* Top: avatar + info + edit */}
-        <div className="flex flex-col md:flex-row items-center md:items-start gap-8 mb-8">
-          <div className="flex items-center gap-6">
-            {/* circular avatar */}
-            <div className="relative">
-              <div className="w-24 h-24 md:w-28 md:h-28 rounded-full bg-gradient-to-br from-violet-500 via-pink-500 to-orange-500 p-[3px] shadow-2xl">
-                <div className="w-full h-full rounded-full bg-[#020617] flex items-center justify-center text-3xl md:text-4xl font-black textwhite">
-                  {user.name ? user.name[0].toUpperCase() : 'U'}
-                </div>
-              </div>
-              <div className="absolute -bottom-1 -right-1 w-7 h-7 rounded-full bg-black/80 border borderwhite/30 flex items-center justify-center text-[10px] text-slate-200">
-                <Edit3 size={12} />
-              </div>
-            </div>
+    <div className="pt-28 px-4 pb-20 relative z-10 max-w-5xl mx-auto">
+      {/* Main Glass Card */}
+      <div className="relative bg-black/40 backdrop-blur-3xl rounded-[3rem] border border-white/10 overflow-hidden shadow-2xl">
 
-            <div className="text-center md:text-left">
-              <h1 className="text-3xl md:text-4xl font-black textwhite mb-1">
-                {user.name}
-              </h1>
-              <p className="text-sm md:text-base text-slate-200 font-medium">
-                {user.degree} • {user.university}
-              </p>
-              <p className="text-xs md:text-sm text-slate-400 mt-1 italic">
-                "{user.bio || 'Student at Campus Sync'}"
-              </p>
-              {topInterests.length > 0 && (
-                <div className="mt-3 flex flex-wrap gap-2 justify-center md:justify-start">
-                  {topInterests.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-3 py-1 text-[11px] font-semibold rounded-full bg-white/10 border borderwhite/20 text-violet-200"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
-            </div>
-          </div>
+        {/* Decorative Background Glows */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full h-64 bg-gradient-to-b from-violet-600/20 to-transparent opacity-60 blur-3xl pointer-events-none"></div>
 
-          <div className="md:ml-auto flex flex-col items-center md:items-end gap-3">
-            <button className="px-5 py-2 bg-white/10 hover:bg-white/20 textwhite font-semibold rounded-full border borderwhite/30 flex itemscenter gap-2 text-xs">
-              <Edit3 size={14} /> Edit Profile
+        <div className="relative p-8 md:p-12 flex flex-col items-center text-center">
+
+          {/* Avatar with Glow */}
+          <div className="relative mb-6 group">
+            <div className="absolute inset-0 bg-gradient-to-tr from-violet-600 to-orange-500 rounded-full blur-xl opacity-50 group-hover:opacity-80 transition duration-500"></div>
+            <div className="relative w-32 h-32 rounded-full bg-[#0F0F13] border-4 border-black flex items-center justify-center text-5xl font-black text-white shadow-2xl overflow-hidden">
+              {user.name ? user.name[0].toUpperCase() : 'U'}
+            </div>
+            <button className="absolute bottom-0 right-0 bg-white text-black p-2 rounded-full shadow-lg hover:scale-110 transition">
+              <Edit3 size={16} />
             </button>
-            <div className="text-[10px] uppercase tracking-[0.2em] text-slate-300 flex itemscenter gap-2">
-              <Sparkles size={14} className="text-orange-300" />
-              Campus Sync Member
-            </div>
           </div>
-        </div>
 
-        {/* Stats row */}
-        <div className="grid grid-cols-3 gap-4 mb-8">
-          <ProfileStatCard label="Posts" value={myPosts.length} />
-          <ProfileStatCard label="Events" value={registeredEventIds.length} />
-          <ProfileStatCard label="Karma" value={user.karma} accent />
-        </div>
+          {/* User Info */}
+          <h1 className="text-4xl md:text-5xl font-black text-white mb-2 tracking-tight">
+            {user.name}
+          </h1>
+          <p className="text-lg text-slate-300 font-medium mb-4 flex items-center gap-2 justify-center">
+            <span className="text-violet-400">{user.degree}</span>
+            <span className="w-1 h-1 bg-slate-500 rounded-full"></span>
+            <span>{user.university}</span>
+          </p>
 
-        {/* Activity tabs */}
-        <ProfileActivityTabs posts={myPosts} events={myEvents} comments={myComments} />
+          {/* Bio */}
+          <p className="text-slate-400 max-w-lg mx-auto mb-8 leading-relaxed">
+            "{user.bio || 'Student at Campus Sync. Ready to connect and build.'}"
+          </p>
+
+          {/* Tags */}
+          {topInterests.length > 0 && (
+            <div className="flex flex-wrap gap-2 justify-center mb-10">
+              {topInterests.map((tag) => (
+                <span
+                  key={tag}
+                  className="px-4 py-1.5 text-xs font-bold rounded-full bg-white/5 border border-white/10 text-slate-300 hover:bg-white/10 transition"
+                >
+                  {tag}
+                </span>
+              ))}
+            </div>
+          )}
+
+          {/* Stats Row (Unified) */}
+          <div className="grid grid-cols-3 divide-x divide-white/10 w-full max-w-2xl bg-white/5 rounded-3xl border border-white/10 py-6 mb-10 backdrop-blur-md">
+            <ProfileStatCard label="Posts" value={myPosts.length} />
+            <ProfileStatCard label="Events" value={registeredEventIds.length} />
+            <ProfileStatCard label="Karma" value={user.karma} accent />
+          </div>
+
+          {/* Tabs & Content */}
+          <div className="w-full">
+            <ProfileActivityTabs posts={myPosts} events={myEvents} comments={myComments} />
+          </div>
+
+        </div>
       </div>
     </div>
   );
 };
 
 const ProfileStatCard = ({ label, value, accent = false }) => (
-  <div className="bg-black/30 p-4 rounded-2xl border borderwhite/15 text-center">
-    <div className="text-[10px] text-slate-400 font-bold uppercase tracking-[0.18em] mb-1">
-      {label}
-    </div>
-    <div
-      className={`text-2xl md:text-3xl font-black ${
-        accent ? 'text-orange-400' : 'textwhite'
-      }`}
-    >
+  <div className="flex flex-col items-center justify-center px-4">
+    <div className={`text-3xl md:text-4xl font-black mb-1 ${accent ? 'text-transparent bg-clip-text bg-gradient-to-br from-orange-400 to-red-500' : 'text-white'}`}>
       {value}
+    </div>
+    <div className="text-[10px] font-bold uppercase tracking-[0.2em] text-slate-500">
+      {label}
     </div>
   </div>
 );
@@ -1359,23 +1474,22 @@ const ProfileActivityTabs = ({ posts, events, comments }) => {
     tab === 'posts'
       ? posts
       : tab === 'events'
-      ? events
-      : comments;
+        ? events
+        : comments;
 
   return (
-    <div>
-      {/* tab bar */}
-      <div className="flex justify-center mb-4 border-t borderwhite/10 pt-4">
-        <div className="inline-flex bg-black/40 rounded-full border borderwhite/15 overflow-hidden">
+    <div className="w-full">
+      {/* Tab Switcher */}
+      <div className="flex justify-center mb-8">
+        <div className="inline-flex bg-black/40 p-1.5 rounded-full border border-white/10">
           {tabs.map((t) => (
             <button
               key={t.id}
               onClick={() => setTab(t.id)}
-              className={`px-6 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] ${
-                tab === t.id
-                  ? 'bg-white text-slate-900'
-                  : 'text-slate-400 hover:textwhite'
-              }`}
+              className={`px-8 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${tab === t.id
+                ? 'bg-white text-black shadow-lg scale-105'
+                : 'text-slate-400 hover:text-white hover:bg-white/5'
+                }`}
             >
               {t.label}
             </button>
@@ -1383,23 +1497,30 @@ const ProfileActivityTabs = ({ posts, events, comments }) => {
         </div>
       </div>
 
-      {/* tiles */}
+      {/* Content Grid */}
       {items.length > 0 ? (
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {items.slice(0, 9).map((item) => {
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+          {items.slice(0, 6).map((item) => {
             if (tab === 'posts') {
               return (
                 <div
                   key={item.id}
-                  className="bg-black/40 border borderwhite/15 rounded-2xl p-3 text-xs text-slate-200 hover:bg-white/10 transition flex flex-col justify-between"
+                  className="group bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition cursor-pointer"
                 >
-                  <div className="font-semibold text-sm line-clamp-2 mb-2">
+                  <div className="flex justify-between items-start mb-3">
+                    <span className="text-[10px] font-bold px-2 py-1 rounded bg-violet-500/20 text-violet-300 border border-violet-500/30">
+                      {item.category}
+                    </span>
+                    <span className="text-[10px] text-slate-500">
+                      {new Date(item.created_at).toLocaleDateString()}
+                    </span>
+                  </div>
+                  <h3 className="font-bold text-white text-lg mb-2 line-clamp-1 group-hover:text-violet-300 transition">
                     {item.title}
-                  </div>
-                  <div className="flex items-center justify-between text-[10px] text-slate-500">
-                    <span>{item.category}</span>
-                    <span>{new Date(item.created_at).toLocaleDateString()}</span>
-                  </div>
+                  </h3>
+                  <p className="text-sm text-slate-400 line-clamp-2">
+                    {item.content}
+                  </p>
                 </div>
               );
             }
@@ -1407,37 +1528,32 @@ const ProfileActivityTabs = ({ posts, events, comments }) => {
               return (
                 <div
                   key={item.id}
-                  className="bg-black/40 border borderwhite/15 rounded-2xl p-3 text-xs text-slate-200 hover:bg-white/10 transition flex flex-col justify-between"
+                  className="group bg-white/5 border border-white/10 rounded-2xl p-4 flex gap-4 hover:bg-white/10 transition cursor-pointer"
                 >
-                  <div className="font-semibold text-sm line-clamp-2 mb-2">
-                    {item.title}
+                  <div className="w-16 h-16 rounded-xl bg-slate-800 overflow-hidden shrink-0">
+                    <img src={item.img} className="w-full h-full object-cover opacity-70 group-hover:opacity-100 transition" />
                   </div>
-                  <div className="flex items-center justify-between text-[10px] text-slate-500">
-                    <span>{item.date}</span>
-                    <span>{item.loc}</span>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="font-bold text-white text-base truncate group-hover:text-orange-300 transition">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-slate-400 mb-1">{item.date} • {item.loc}</p>
+                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                      {item.category}
+                    </span>
                   </div>
                 </div>
               );
             }
-            return (
-              <div
-                key={item.id}
-                className="bg-black/40 border borderwhite/15 rounded-2xl p-3 text-xs text-slate-200 hover:bg-white/10 transition flex flex-col justify-between"
-              >
-                <div className="line-clamp-2 mb-1">{item.text}</div>
-                <div className="flex items-center justify-between text-[10px] text-slate-500">
-                  <span>{item.postTitle || 'On a post'}</span>
-                  {item.created_at && (
-                    <span>{new Date(item.created_at).toLocaleDateString()}</span>
-                  )}
-                </div>
-              </div>
-            );
+            return null; // comments
           })}
         </div>
       ) : (
-        <div className="bg-black/30 border border-dashed borderwhite/20 rounded-2xl p-6 text-slate-300 text-sm text-center">
-          {emptyText}
+        <div className="py-16 border border-dashed border-white/10 rounded-3xl bg-white/5 flex flex-col items-center justify-center text-center">
+          <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mb-4 text-slate-500">
+            <Sparkles size={24} />
+          </div>
+          <p className="text-slate-400 font-medium">{emptyText}</p>
         </div>
       )}
     </div>
@@ -1453,8 +1569,9 @@ function App() {
   const [pendingProfile, setPendingProfile] = useState(null); // for interests step
   const [posts, setPosts] = useState([]);
   const [events, setEvents] = useState([]);
+  const [comments, setComments] = useState([]);
   const [registeredEventIds, setRegisteredEventIds] = useState([]);
-  
+
 
   useEffect(() => {
     const savedUser = localStorage.getItem('campus_profile');
@@ -1476,12 +1593,33 @@ function App() {
         if (postData) setPosts(postData);
         const { data: eventData } = await supabase.from('events').select('*');
         if (eventData) setEvents(eventData);
+        const { data: commentData } = await supabase.from('comments').select('*');
+        if (commentData) setComments(commentData);
       } catch (e) {
         console.log('DB Error', e);
       }
     };
     fetchData();
   }, []);
+
+  useEffect(() => {
+    if (user?.email) {
+      const fetchRegistrations = async () => {
+        const { data } = await supabase
+          .from('registrations')
+          .select('event_id')
+          .eq('user_email', user.email);
+        if (data) {
+          setRegisteredEventIds(data.map((r) => r.event_id));
+        }
+      };
+      fetchRegistrations();
+    }
+  }, [user]);
+
+  useEffect(() => {
+    console.log('DEBUG: Events data:', events);
+  }, [events]);
 
   const handleLogin = (profile) => {
     const fullUser = {
@@ -1622,6 +1760,8 @@ function App() {
           user={user}
           posts={posts}
           registeredEventIds={registeredEventIds}
+          events={events}
+          comments={comments}
         />
       )}
     </div>
