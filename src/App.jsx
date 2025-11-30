@@ -368,6 +368,7 @@ const AuthPage = ({ onLogin, onSignup }) => {
           karma: 50,
           bio: 'Student at Campus Sync',
           interested_tags: [],
+          liked_posts: [],
         };
 
         const { data, error } = await supabase
@@ -662,9 +663,10 @@ const PostCard = ({ post, user, onLike }) => {
       <div className="flex items-center gap-8 border-t border-white/10 pt-6">
         <button
           onClick={() => onLike(post.id, post.upvotes)}
-          className="flex items-center gap-2 text-slate-400 font-bold hover:text-orange-400 transition"
+          className={`flex items-center gap-2 font-bold transition ${user?.liked_posts?.includes(post.id) ? 'text-pink-500' : 'text-slate-400 hover:text-orange-400'
+            }`}
         >
-          <Heart size={20} /> {post.upvotes}
+          <Heart size={20} fill={user?.liked_posts?.includes(post.id) ? 'currentColor' : 'none'} /> {post.upvotes}
         </button>
         <button
           onClick={loadComments}
@@ -1659,8 +1661,21 @@ function App() {
   };
 
   const handleLike = async (postId, currentLikes) => {
+    if (!user) return;
+    const likedPosts = user.liked_posts || [];
+    if (likedPosts.includes(postId)) return; // Already liked
+
+    // Optimistic update
+    const updatedLikedPosts = [...likedPosts, postId];
+    const updatedUser = { ...user, liked_posts: updatedLikedPosts };
+    setUser(updatedUser);
+    localStorage.setItem('campus_profile', JSON.stringify(updatedUser));
+
     setPosts(posts.map((p) => (p.id === postId ? { ...p, upvotes: currentLikes + 1 } : p)));
+
+    // DB updates
     await supabase.from('posts').update({ upvotes: currentLikes + 1 }).eq('id', postId);
+    await supabase.from('profiles').update({ liked_posts: updatedLikedPosts }).eq('id', user.id);
   };
 
   const handleAddEvent = async (eventData) => {
